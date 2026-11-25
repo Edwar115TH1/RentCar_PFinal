@@ -3,7 +3,8 @@ public class Menu {
     
     public static void main(String[] args) { // Unica Clase Principal
         Scanner SC = new Scanner(System.in); // creamos el objeto de la clase Scaner que usaremos.
-        Utilidades u = new Utilidades();
+        AlmacenamientoDatos datos = new AlmacenamientoDatos();
+        Utilidades u = new Utilidades(datos);
         boolean seguir = true;
         while (seguir) {
             switch(u.menuPpal(SC)) {

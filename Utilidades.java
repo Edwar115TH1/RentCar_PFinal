@@ -1,8 +1,16 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
+
 public class Utilidades {
-    
+    private AlmacenamientoDatos datos;
+
+    public Utilidades(AlmacenamientoDatos datos){
+        this.datos = datos;
+    }
+
     public int menuPpal(Scanner sc){
         System.out.println("\n>>>>>> Bienvenido/a <<<<<<");
         System.out.println(">> SISTEMA DE RENTING DE AUTOS <<");
@@ -18,8 +26,8 @@ public class Utilidades {
        return num; 
     }
 
-    public boolean  SubMenuGestionClientes(Scanner sc){
-      int op = 0;
+    public boolean SubMenuGestionClientes(Scanner sc){
+      int op;
         do {
             System.out.println("\n>>> 1. GESTIÓN DE CLIENTES <<<");
             System.out.println("1.1 Registrar cliente (Digite 1)");
@@ -60,7 +68,7 @@ public class Utilidades {
     }
     
     public boolean SubMenuGestionVehiculos(Scanner sc){
-        int op = 0;
+        int op;
         do {
             System.out.println("\n>>> 2. GESTIÓN DE VEHÍCULOS <<<");
             System.out.println("2.1 Registrar vehículo (Digite 1)");
@@ -96,7 +104,7 @@ public class Utilidades {
     }
 
     public boolean SubMenuGestionContratos(Scanner sc){
-        int op = 0;
+        int op;
         do {
             System.out.println("\n>>> 3. GESTIÓN DE CONTRATOS DE RENTING <<<");
             System.out.println("3.1 Registrar nuevo contrato (Digite 1)");
@@ -129,5 +137,116 @@ public class Utilidades {
             }
         } while (op != 5);
         return true;
+    }
+
+//Creación de cliente, Vehiculo y contrato (Dinamicos)
+    public boolean AgregarCliente(ObjClientes Cliente) {
+        if (Cliente == null) {
+            return false;
+        }
+        return datos.getListaClientes().add(Cliente);
+    }
+
+    public boolean AgregarVehiculo(ObjVehiculos vehiculo) {
+        if (vehiculo == null) {
+            return false;
+        }
+        return datos.getlistaVehiculos().add(vehiculo);
+    }
+
+    public boolean AgregarContrato(ContratoRenting contratoRenting) {
+        if (contratoRenting == null) {
+            return false;
+        }
+        return datos.getlistaContratos().add(contratoRenting);
+    }
+
+    //Elminación de Cliente, Vehiculo y contraro (Aqui debemos Sincronizar)
+    public boolean EliminarCliente(String cedula) {
+        ObjClientes clienteAeliminar = null;
+
+        for (ObjClientes c : datos.getListaClientes()) {
+            if (c.getCedula().equalsIgnoreCase(cedula)) {
+                clienteAeliminar = c;
+                break;
+            }
+        }
+        if (clienteAeliminar != null) {
+            datos.getListaClientes().remove(clienteAeliminar);
+            eliminarContratoXCliente(cedula);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean eliminarVehiculo(String placa) {
+        ObjVehiculos vehiculoAeliminar = null;
+
+        for (ObjVehiculos v : datos.getlistaVehiculos()) {
+            if (v.getPlaca().equalsIgnoreCase(placa)) {
+                vehiculoAeliminar = v;
+                break;
+            }
+        }
+
+        if (vehiculoAeliminar != null) {
+            datos.getlistaVehiculos().remove(vehiculoAeliminar);
+            eliminarContratoXVehiculo(placa);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean eliminarContrato(String idContrado) {
+        ContratoRenting contratoAeliminar = null;
+
+        for (ContratoRenting contrato : datos.getlistaContratos()) {
+            if (contrato.getIdContrato().equalsIgnoreCase(idContrado)) {
+                contratoAeliminar = contrato;
+                break;
+            }
+        }
+
+        if (contratoAeliminar != null) {
+            liberarVehiculo(contratoAeliminar.getPlacaVehiculo());
+            datos.getlistaContratos().remove(contratoAeliminar);
+            return true;
+        }
+        return false;
+    }
+
+    public int eliminarContratoXCliente(String cedulaCliente) {
+        List<ContratoRenting> contratoAelimimnar = new ArrayList<>();
+
+        for (ContratoRenting contrato : datos.getlistaContratos()) {
+            if (contrato.getCedulaCliente().equalsIgnoreCase(cedulaCliente)) {
+                liberarVehiculo(contrato.getPlacaVehiculo());
+                contratoAelimimnar.add(contrato);
+            }
+        }
+        datos.getlistaContratos().removeAll(contratoAelimimnar);
+        return contratoAelimimnar.size();
+    }
+
+    public int eliminarContratoXVehiculo(String placaVehiculo) {
+        List<ContratoRenting> contratoAeliminar = new ArrayList<>();
+
+        for (ContratoRenting contrato : datos.getlistaContratos()) {
+            if (contrato.getPlacaVehiculo().equalsIgnoreCase(placaVehiculo)) {
+                contratoAeliminar.add(contrato);
+            }
+        }
+        datos.getlistaContratos().removeAll(contratoAeliminar);
+        return contratoAeliminar.size();
+    }
+
+    private boolean liberarVehiculo(String placa) {
+        for (ObjVehiculos v : datos.getlistaVehiculos()) {
+            if (v.getPlaca().equalsIgnoreCase(placa)) {
+                v.setEstado("disponible");
+                return true;
+            }
+        }
+        return false;
     }
 }
