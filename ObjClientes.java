@@ -11,12 +11,12 @@ public class ObjClientes {
     }
 
     public ObjClientes(String cedula, String nombre, String apellido, String telefono, String direccion, String licencia) {
-        this.Cedula = Cedula;
-        this.Nombre = Nombre;
-        this.Apellido = Apellido;
-        this.Telefono = Telefono;
-        this.Direccion = Direccion;
-        this.Licencia_Coduccion = Licencia_Coduccion; 
+        this.Cedula = cedula;
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.Telefono = telefono;
+        this.Direccion = direccion;
+        this.Licencia_Coduccion = licencia; 
     }
 
     public String getCedula() {
