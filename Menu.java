@@ -21,7 +21,8 @@ public class Menu {
                     break;
 
                 case 4:
-                    System.out.println("pagina en mantenimiento");
+                    Exportarjson exportar = new Exportarjson();
+                    System.out.println(exportar.exportarInformeGeneral(datos));
                     break;
 
                 case 5:

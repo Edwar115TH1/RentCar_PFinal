@@ -54,7 +54,7 @@ public class Exportarjson {
             return "X_X El cliente no existe.";
         }
         String jsonCliente = gson.toJson(cliente);
-        guardarArchivoIndividual("cliente: " + cliente.getCedula() + ".json", jsonCliente);
+        guardarArchivoIndividual("cliente_" + cliente.getCedula() + ".json", jsonCliente);
         return " >>> INFORMACIÓN DEL CLIENTE (JSON) <<< \n" + jsonCliente;
     }
 
@@ -65,7 +65,7 @@ public class Exportarjson {
         }
         String tipo = (vehiculo instanceof ObjCarroSedan) ? "SEDÁN" : "CAMIONETA SUV";
         String jsonVehiculo = gson.toJson(vehiculo);
-        guardarArchivoIndividual("vehiculo: " + vehiculo.getPlaca() + ".json", jsonVehiculo);
+        guardarArchivoIndividual("vehiculo_" + vehiculo.getPlaca() + ".json", jsonVehiculo);
         return " >>> INFORMACIÓN DEL VEHÍCULO [" + tipo + "] (JSON) <<< \n" + jsonVehiculo;
     }
 
@@ -75,13 +75,10 @@ public class Exportarjson {
             return "X_X El contrato no existe.";
         }
         String jsonContrato = gson.toJson(contrato);
-        guardarArchivoIndividual("contrato: " + contrato.getIdContrato() + ".json", jsonContrato);
+        guardarArchivoIndividual("contrato_" + contrato.getIdContrato() + ".json", jsonContrato);
         return " >>> INFORMACIÓN DEL CONTRATO (JSON) <<< \n" + jsonContrato;
     }
-
-   
-   
-  
+    
     //Metodos Auxiliares
     private boolean esContratoActivo(String placaVehiculo, List<ObjVehiculos> listaVehiculos) {
         for (ObjVehiculos v : listaVehiculos) {
