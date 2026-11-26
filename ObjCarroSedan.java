@@ -14,6 +14,7 @@ public class ObjCarroSedan extends ObjVehiculos{
         setModelo(modelo);
         setPreciodiario(preciodiario);
         setEstado(estado);
+
         this.tipocombustible = tipocombustible;
         this.transmision = transmision;
 
